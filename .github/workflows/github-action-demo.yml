@@ -1,0 +1,33 @@
+name: Build and Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - master   # 只有 push 到 dev-v2 分支时才触发
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18   # Vite 推荐 Node 16+，这里用 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # branch: dev-v2   # 部署到 dev-v2 分支
+          branch: gh-pages   # 部署到 gh-pages 分支
+          folder: dist       # Vite/React 输出目录
